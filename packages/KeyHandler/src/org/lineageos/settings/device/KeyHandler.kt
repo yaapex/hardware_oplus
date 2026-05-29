@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021-2025 The LineageOS Project
+ * Copyright (C) 2021-2023 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -97,9 +97,9 @@ class KeyHandler(private val context: Context) : DeviceKeyHandler {
 
         val scanCode = File("/proc/tristatekey/tri_state").readText().trim().toInt()
         val keyCodeValue = when (scanCode) {
-            1 -> sharedPreferences.getString(ALERT_SLIDER_TOP_KEY, "2")!!.toInt()
+            1 -> sharedPreferences.getString(ALERT_SLIDER_TOP_KEY, "0")!!.toInt()
             2 -> sharedPreferences.getString(ALERT_SLIDER_MIDDLE_KEY, "1")!!.toInt()
-            3 -> sharedPreferences.getString(ALERT_SLIDER_BOTTOM_KEY, "0")!!.toInt()
+            3 -> sharedPreferences.getString(ALERT_SLIDER_BOTTOM_KEY, "2")!!.toInt()
             else -> return event
         }
 
@@ -164,6 +164,11 @@ class KeyHandler(private val context: Context) : DeviceKeyHandler {
         prevKeyCode = keyCodeValue
         return null
     }
+
+    override fun onPocketStateChanged(inPocket: Boolean) {
+        // Do nothing
+    }
+
 
     private fun doHapticFeedback(effect: Int) {
         if (vibrator != null && vibrator.hasVibrator() && effect != -1) {
